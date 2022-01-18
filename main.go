@@ -2,6 +2,7 @@ package main
 
 import (
 	"image"
+	"image/color"
 	"image/png"
 	"log"
 	"os"
@@ -10,6 +11,7 @@ import (
 func main() {
 	nx := 2048
 	ny := 2048
+	ns := 16
 
 	hitable := []Sphere{
 		{Vec3{0.0, 0.0, -1.0}, 0.5},
@@ -25,11 +27,19 @@ func main() {
 	img := image.NewNRGBA64(image.Rect(0, 0, nx, ny))
 	for j := 0; j < ny; j++ {
 		for i := 0; i <= nx; i++ {
-			u := float64(i) / float64(nx)
-			v := float64(j) / float64(ny)
-			r := cam.GetRay(u, v)
-			color := r.Color(HitableList(world))
-			img.Set(i, j, color)
+			var red, green, blue uint32
+			for s := 0; s < ns; s++ {
+				u := float64(i) / float64(nx)
+				v := float64(j) / float64(ny)
+				r := cam.GetRay(u, v)
+				tmpR, tmpG, tmpB, _ := r.Color(HitableList(world)).RGBA()
+
+				red += tmpR
+				green += tmpG
+				blue += tmpB
+
+			}
+			img.Set(i, j, color.NRGBA64{uint16(red/uint32(ns)), uint16(green/uint32(ns)), uint16(blue/uint32(ns)), 65535})
 		}
 	}
 
