@@ -11,7 +11,7 @@ import (
 func main() {
 	nx := 2048
 	ny := 2048
-	ns := 16
+	var ns uint32 = 4
 
 	hitable := []Sphere{
 		{Vec3{0.0, 0.0, -1.0}, 0.5},
@@ -28,7 +28,7 @@ func main() {
 	for j := 0; j < ny; j++ {
 		for i := 0; i <= nx; i++ {
 			var red, green, blue uint32
-			for s := 0; s < ns; s++ {
+			for s := 0; s < int(ns); s++ {
 				u := float64(i) / float64(nx)
 				v := float64(j) / float64(ny)
 				r := cam.GetRay(u, v)
@@ -39,7 +39,11 @@ func main() {
 				blue += tmpB
 
 			}
-			img.Set(i, j, color.NRGBA64{uint16(red/uint32(ns)), uint16(green/uint32(ns)), uint16(blue/uint32(ns)), 65535})
+
+			scaledDownRed := uint16(red / ns)
+			scaledDownGreen := uint16(green /ns)
+			scaledDownBlue := uint16(blue / ns)
+			img.Set(i, j, gammaCorrect(color.NRGBA64{scaledDownRed, scaledDownGreen, scaledDownBlue, 65535}))
 		}
 	}
 

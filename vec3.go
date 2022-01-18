@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"math"
+	"math/rand"
 )
 
 type Vec3 struct {
@@ -35,4 +36,27 @@ func (v3 Vec3) Length() float64 {
 
 func (v3 Vec3) ToNRGBA64() color.NRGBA64 {
 	return color.NRGBA64{uint16(v3.x * 65535), uint16(v3.y * 65535), uint16(v3.z * 65535), 65535}
+}
+
+func gammaCorrect(c color.NRGBA64) color.NRGBA64 {
+	return color.NRGBA64{
+		uint16(math.Pow((float64(c.R))/65535, 2.2) * 65535),
+		uint16(math.Pow((float64(c.G))/65535, 2.2) * 65535),
+		uint16(math.Pow((float64(c.B))/65535, 2.2) * 65535),
+		c.A,
+	}
+}
+
+func RandomInUnitSphere() Vec3 {
+	for {
+		p := Vec3{
+			2*rand.Float64() - 1,
+			2*rand.Float64() - 1,
+			2*rand.Float64() - 1,
+		}
+
+		if p.Length() < 1 {
+			return p
+		}
+	}
 }
