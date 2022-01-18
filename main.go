@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/png"
 	"log"
@@ -28,13 +27,12 @@ func main() {
 	}
 
 	img := image.NewNRGBA64(image.Rect(0, 0, nx, ny))
-	for j := ny - 1; j >= 0; j-- {
+	for j := 0; j < ny; j++ {
 		for i := 0; i <= nx; i++ {
 			u := float64(i) / float64(nx)
 			v := float64(j) / float64(ny)
 			r := Ray{origin, lowerLeftCorner.Add(horizontal.Mul(u)).Add(vertical.Mul(v))}
 			color := r.Color(HitableList(world))
-			fmt.Printf("%d %d %d\n", color.R, color.G, color.B)
 			img.Set(i, j, color)
 		}
 	}

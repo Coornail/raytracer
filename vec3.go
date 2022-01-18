@@ -34,5 +34,5 @@ func (v3 Vec3) Length() float64 {
 }
 
 func (v3 Vec3) ToNRGBA64() color.NRGBA64 {
-	return color.NRGBA64{uint8(v3.x * 0xf), uint8(v3.y * 0xf), uint8(v3.z * 0xf), 0xf}
+	return color.NRGBA64{uint16(v3.x * 65535), uint16(v3.y * 65535), uint16(v3.z * 65535), 65535}
 }
