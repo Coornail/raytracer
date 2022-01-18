@@ -11,11 +11,6 @@ func main() {
 	nx := 2048
 	ny := 2048
 
-	var lowerLeftCorner Vec3 = Vec3{-2.0, -1.0, -1.0}
-	var vertical Vec3 = Vec3{4.0, 0.0, 0.0}
-	var horizontal Vec3 = Vec3{0.0, 4.0, 0.0}
-	var origin Vec3 = Vec3{0.0, 0.0, 0.0}
-
 	hitable := []Sphere{
 		{Vec3{0.0, 0.0, -1.0}, 0.5},
 		{Vec3{0.0, -100.5, -1.0}, 100},
@@ -26,12 +21,13 @@ func main() {
 		world[i] = hitable[i]
 	}
 
+	cam := NewCamera()
 	img := image.NewNRGBA64(image.Rect(0, 0, nx, ny))
 	for j := 0; j < ny; j++ {
 		for i := 0; i <= nx; i++ {
 			u := float64(i) / float64(nx)
 			v := float64(j) / float64(ny)
-			r := Ray{origin, lowerLeftCorner.Add(horizontal.Mul(u)).Add(vertical.Mul(v))}
+			r := cam.GetRay(u, v)
 			color := r.Color(HitableList(world))
 			img.Set(i, j, color)
 		}
