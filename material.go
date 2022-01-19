@@ -15,10 +15,11 @@ func (l Lambertian) scatter(r Ray, rec HitRecord) (bool, Ray, Vec3) {
 
 type Metal struct {
 	Albedo Vec3
+	Fuzz float64
 }
 
 func (m Metal) scatter(r Ray, rec HitRecord) (bool, Ray, Vec3) {
 	reflected := Reflect(r.Direction.UnitVector(), rec.normal)
-	scattered := Ray{rec.p, reflected}
+	scattered := Ray{rec.p, reflected.Add(RandomInUnitSphere().Mul(m.Fuzz))}
 	return dot(scattered.Direction, rec.normal) > 0, scattered, m.Albedo
 }

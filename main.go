@@ -28,12 +28,12 @@ func main() {
 		{
 			Center: Vec3{1, 0, -1},
 			Radius: 0.5,
-			Material: Metal{Vec3{0.8, 0.6, 0.2}},
+			Material: Metal{Vec3{0.8, 0.6, 0.2}, 0.1},
 		},
 		{
 			Center: Vec3{-1, 0, -1},
 			Radius: 0.5,
-			Material: Metal{Vec3{0.8, 0.8, 0.8}},
+			Material: Metal{Vec3{0.8, 0.8, 0.8}, 0.5},
 		},
 	}
 
