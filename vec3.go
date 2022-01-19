@@ -61,9 +61,9 @@ func (v3 Vec3) ToNRGBA64() color.NRGBA64 {
 
 func gammaCorrect(c color.NRGBA64) color.NRGBA64 {
 	return color.NRGBA64{
-		uint16(math.Pow((float64(c.R))/65535, 2.2) * 65535),
-		uint16(math.Pow((float64(c.G))/65535, 2.2) * 65535),
-		uint16(math.Pow((float64(c.B))/65535, 2.2) * 65535),
+		uint16(math.Pow((float64(c.R))/65535, 1.2) * 65535),
+		uint16(math.Pow((float64(c.G))/65535, 1.2) * 65535),
+		uint16(math.Pow((float64(c.B))/65535, 1.2) * 65535),
 		c.A,
 	}
 }

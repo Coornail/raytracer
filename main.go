@@ -16,9 +16,9 @@ func main() {
 
 	hitable := []Sphere{
 		{
-			Center: Vec3{0, 0, -1},
+			Center: Vec3{0, 0.0, -1},
 			Radius: 0.5,
-			Material: Lambertian{Vec3{0.1, 0.2, 0.5}},
+			Material: Lambertian{Vec3{0.8, 0.3, 0.3}},
 		},
 		{
 			Center: Vec3{0, -100.5, -1},
