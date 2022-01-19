@@ -34,6 +34,10 @@ func (v3 Vec3) Length() float64 {
 	return math.Sqrt(v3.x*v3.x + v3.y*v3.y + v3.z*v3.z)
 }
 
+func (v3 Vec3) SquaredLength() float64 {
+	return v3.x*v3.x + v3.y*v3.y + v3.z*v3.z
+}
+
 func (v3 Vec3) ToNRGBA64() color.NRGBA64 {
 	return color.NRGBA64{uint16(v3.x * 65535), uint16(v3.y * 65535), uint16(v3.z * 65535), 65535}
 }
@@ -53,9 +57,9 @@ func RandomInUnitSphere() Vec3 {
 			2*rand.Float64() - 1,
 			2*rand.Float64() - 1,
 			2*rand.Float64() - 1,
-		}
+		}.Sub(Vec3{1, 1, 1})
 
-		if p.Length() < 1 {
+		if p.SquaredLength() < 1 {
 			return p
 		}
 	}

@@ -19,3 +19,7 @@ func NewCamera() *Camera {
 		Origin: 	Vec3{0.0, 0.0, 0.0},
 	}
 }
+
+func (c *Camera) MoveBack() {
+	c.Origin = c.Origin.Add(c.Horizontal.Mul(-0.1))
+}
