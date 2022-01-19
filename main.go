@@ -12,11 +12,24 @@ import (
 func main() {
 	nx := 2048
 	ny := 2048
-	var ns uint32 = 4
+	var ns uint32 = 1
 
 	hitable := []Sphere{
-		{Vec3{0.0, 0.0, -1.0}, 0.5},
-		{Vec3{0.0, -100.5, -1.0}, 100},
+		{
+			Center: Vec3{0, 0, -1},
+			Radius: 0.5,
+			Material: Lambertian{Vec3{0.1, 0.2, 0.5}},
+		},
+		{
+			Center: Vec3{0, -100.5, -1},
+			Radius: 100,
+			Material: Lambertian{Vec3{0.8, 0.8, 0.0}},
+		},
+		{
+			Center: Vec3{1, 0, -1},
+			Radius: 0.5,
+			Material: Metal{Vec3{0.8, 0.6, 0.2}},
+		},
 	}
 
 	world := make([]Hitable, len(hitable))
@@ -33,7 +46,7 @@ func main() {
 				u := (float64(i) + rand.Float64()) / float64(nx)
 				v := (float64(j) + rand.Float64()) / float64(ny)
 				r := cam.GetRay(u, v)
-				tmpR, tmpG, tmpB, _ := r.Color(HitableList(world)).RGBA()
+				tmpR, tmpG, tmpB, _ := r.Color(HitableList(world), 0).RGBA()
 
 				red += tmpR
 				green += tmpG

@@ -23,6 +23,7 @@ func dot(v1, v2 Vec3) float64 {
 type Sphere struct {
 	Center Vec3
 	Radius float64
+	Material Material
 }
 
 func (s Sphere) Hit(r Ray, t_min float64, t_max float64) (bool, HitRecord) {
@@ -38,6 +39,7 @@ func (s Sphere) Hit(r Ray, t_min float64, t_max float64) (bool, HitRecord) {
 			rec.t = temp
 			rec.p = r.PointAtParameter(rec.t)
 			rec.normal = rec.p.Sub(s.Center).Div(s.Radius)
+			rec.material = s.Material
 			return true, rec
 		}
 
@@ -46,6 +48,7 @@ func (s Sphere) Hit(r Ray, t_min float64, t_max float64) (bool, HitRecord) {
 			rec.t = temp
 			rec.p = r.PointAtParameter(rec.t)
 			rec.normal = rec.p.Sub(s.Center).Div(s.Radius)
+			rec.material = s.Material
 			return true, rec
 		}
 	}

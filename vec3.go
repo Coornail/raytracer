@@ -22,6 +22,11 @@ func (v3 Vec3) Mul(f float64) Vec3 {
 	return Vec3{v3.x * f, v3.y * f, v3.z * f}
 }
 
+func (v3 Vec3) MulColor(v2 color.Color) color.NRGBA64 {
+	r, g, b, _ := v2.RGBA()
+	return Vec3{v3.x * (float64(r) / 0xffff), v3.y * (float64(g) / 0xffff), v3.z * (float64(b))/0xffff}.ToNRGBA64()
+}
+
 func (v3 Vec3) Div(f float64) Vec3 {
 	return Vec3{v3.x / f, v3.y / f, v3.z / f}
 }
@@ -36,6 +41,18 @@ func (v3 Vec3) Length() float64 {
 
 func (v3 Vec3) SquaredLength() float64 {
 	return v3.x*v3.x + v3.y*v3.y + v3.z*v3.z
+}
+
+func (v3 Vec3) SubScalar(n float64) Vec3 {
+	return Vec3{
+		v3.x - n,
+		v3.y - n,
+		v3.z - n,
+	}
+}
+
+func Reflect(v, n Vec3) Vec3 {
+	return v.SubScalar(2 * dot(v, n))
 }
 
 func (v3 Vec3) ToNRGBA64() color.NRGBA64 {
