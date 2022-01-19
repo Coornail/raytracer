@@ -30,6 +30,11 @@ func main() {
 			Radius: 0.5,
 			Material: Metal{Vec3{0.8, 0.6, 0.2}},
 		},
+		{
+			Center: Vec3{-1, 0, -1},
+			Radius: 0.5,
+			Material: Metal{Vec3{0.8, 0.8, 0.8}},
+		},
 	}
 
 	world := make([]Hitable, len(hitable))

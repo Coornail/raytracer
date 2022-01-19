@@ -1,5 +1,9 @@
 package main
 
+type Material interface {
+	scatter(Ray, HitRecord) (bool, Ray, Vec3)
+}
+
 type Lambertian struct {
 	Albedo Vec3
 }

@@ -52,7 +52,7 @@ func (v3 Vec3) SubScalar(n float64) Vec3 {
 }
 
 func Reflect(v, n Vec3) Vec3 {
-	return v.SubScalar(2 * dot(v, n))
+	return v.Sub(n.Mul(2 * dot(v, n)))
 }
 
 func (v3 Vec3) ToNRGBA64() color.NRGBA64 {

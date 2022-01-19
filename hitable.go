@@ -1,9 +1,5 @@
 package main
 
-type Material interface {
-	scatter(Ray, HitRecord) (bool, Ray, Vec3)
-}
-
 type HitRecord struct {
 	t        float64
 	p        Vec3
