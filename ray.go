@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-const maxDepth = 10
+const maxDepth = 50
 
 type Ray struct {
 	Origin, Direction Vec3

@@ -1,38 +1,47 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
 	"log"
+	"math"
 	"math/rand"
 	"os"
+	"strconv"
 )
 
 func main() {
 	nx := 2048
 	ny := 2048
-	var ns uint32 = 1
+	var ns uint32 = 16
+
+	if len(os.Args) < 2 {
+		fmt.Printf("Usage: %s [Frame number]\n", os.Args[0])
+		os.Exit(1)
+	}
+	frame, _ := strconv.ParseInt(os.Args[1], 10, 32)
 
 	hitable := []Sphere{
 		{
-			Center: Vec3{0, 0.0, -1},
-			Radius: 0.5,
+			Center:   Vec3{math.Sin(float64(frame)) / 60, math.Cos(float64(frame))/60 + float64(frame)/60, -1},
+			Radius:   0.5,
 			Material: Lambertian{Vec3{0.8, 0.3, 0.3}},
 		},
 		{
-			Center: Vec3{0, -100.5, -1},
-			Radius: 100,
+			Center:   Vec3{0, -100.5, -1},
+			Radius:   100,
 			Material: Lambertian{Vec3{0.8, 0.8, 0.0}},
 		},
 		{
-			Center: Vec3{1, 0, -1},
-			Radius: 0.5,
+			Center:   Vec3{1, 0, -1},
+			Radius:   0.5,
 			Material: Metal{Vec3{0.8, 0.6, 0.2}, 0.1},
 		},
 		{
-			Center: Vec3{-1, 0, -1},
-			Radius: 0.5,
+			Center:   Vec3{-1, 0, -1},
+			Radius:   0.5,
 			Material: Metal{Vec3{0.8, 0.8, 0.8}, 0.5},
 		},
 	}
@@ -56,17 +65,17 @@ func main() {
 				red += tmpR
 				green += tmpG
 				blue += tmpB
-
 			}
 
 			scaledDownRed := uint16(red / ns)
-			scaledDownGreen := uint16(green /ns)
+			scaledDownGreen := uint16(green / ns)
 			scaledDownBlue := uint16(blue / ns)
 			img.Set(i, j, gammaCorrect(color.NRGBA64{scaledDownRed, scaledDownGreen, scaledDownBlue, 0xffff}))
 		}
 	}
 
-	f, err := os.Create("out.png")
+	os.Mkdir("out", 0777)
+	f, err := os.Create(fmt.Sprintf("out/%d.png", frame))
 	if err != nil {
 		panic(err)
 	}
