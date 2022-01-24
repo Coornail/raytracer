@@ -13,12 +13,12 @@ type Hitable interface {
 
 type HitableList []Hitable
 
-func (hl HitableList) Hit(r Ray, t_min float64, t_max float64) (bool, HitRecord) {
+func (hl HitableList) Hit(r Ray, tMin float64, tMax float64) (bool, HitRecord) {
 	hitAnything := false
-	closestSoFar := t_max
+	closestSoFar := tMax
 	var rec HitRecord
 	for _, h := range hl {
-		if hit, tempRec := h.Hit(r, t_min, closestSoFar); hit {
+		if hit, tempRec := h.Hit(r, tMin, closestSoFar); hit {
 			hitAnything = true
 			closestSoFar = tempRec.t
 			rec = tempRec

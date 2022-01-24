@@ -10,12 +10,13 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"sync"
 )
 
 func main() {
 	nx := 2048
 	ny := 2048
-	var ns uint32 = 16
+	var antialias uint32 = 16
 
 	if len(os.Args) < 2 {
 		fmt.Printf("Usage: %s [Frame number]\n", os.Args[0])
@@ -56,20 +57,26 @@ func main() {
 	for j := 0; j < ny; j++ {
 		for i := 0; i <= nx; i++ {
 			var red, green, blue uint32
-			for s := 0; s < int(ns); s++ {
-				u := (float64(i) + rand.Float64()) / float64(nx)
-				v := (float64(j) + rand.Float64()) / float64(ny)
-				r := cam.GetRay(u, v)
-				tmpR, tmpG, tmpB, _ := r.Color(HitableList(world), 0).RGBA()
+			var wg sync.WaitGroup
+			wg.Add(int(antialias))
+			for s := 0; s < int(antialias); s++ {
+				go func(i, j int) {
+					u := (float64(i) + rand.Float64()) / float64(nx)
+					v := (float64(j) + rand.Float64()) / float64(ny)
+					r := cam.GetRay(u, v)
+					tmpR, tmpG, tmpB, _ := r.Color(HitableList(world), 0).RGBA()
 
-				red += tmpR
-				green += tmpG
-				blue += tmpB
+					red += tmpR
+					green += tmpG
+					blue += tmpB
+					wg.Done()
+				}(i, j)
 			}
+			wg.Wait()
 
-			scaledDownRed := uint16(red / ns)
-			scaledDownGreen := uint16(green / ns)
-			scaledDownBlue := uint16(blue / ns)
+			scaledDownRed := uint16(red / antialias)
+			scaledDownGreen := uint16(green / antialias)
+			scaledDownBlue := uint16(blue / antialias)
 			img.Set(i, j, gammaCorrect(color.NRGBA64{scaledDownRed, scaledDownGreen, scaledDownBlue, 0xffff}))
 		}
 	}
